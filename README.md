@@ -20,8 +20,8 @@ This project provides a professional-grade Black–Scholes pricing engine suitab
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/black-scholes-pricer.git
-cd black-scholes-pricer
+git clone https://github.com/yourusername/BlackScholes.git
+cd BlackScholes
 
 # Install dependencies
 pip install -r requirements.txt
