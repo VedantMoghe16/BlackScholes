@@ -1,18 +1,19 @@
 # Black–Scholes Option Pricing & Volatility Surface
 
-A complete implementation of the **Black–Scholes option pricing model** with Greeks calculation, implied volatility solving, and 3D volatility surface visualization.
+A complete implementation of the Black–Scholes option pricing model with Greeks calculation, implied volatility solving, and 3D volatility surface visualization.
 
 ## Overview
 
 This project provides a professional-grade Black–Scholes pricing engine suitable for derivatives coursework, quantitative finance projects, interview demonstrations, and risk and volatility analysis.
 
-### Key Features
+## Key Features
 
 - European Call & Put Pricing
 - Complete Greeks Suite (Delta, Gamma, Vega, Theta, Rho)
 - Implied Volatility Solver
 - Vectorized Volatility Surface Generation
 - 3D Surface Visualization
+- **Interactive Volatility Surface Explorer** (Streamlit Web App)
 
 ## Quick Start
 
@@ -20,7 +21,7 @@ This project provides a professional-grade Black–Scholes pricing engine suitab
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/BlackScholes.git
+git clone https://github.com/VedantMoghe16/BlackScholes.git
 cd BlackScholes
 
 # Install dependencies
@@ -32,6 +33,9 @@ pip install -r requirements.txt
 ```bash
 # Run the complete pricing and visualization pipeline
 python main.py
+
+# Launch the Interactive Volatility Surface Explorer
+streamlit run vol_surface.py
 ```
 
 ## Mathematical Background
@@ -39,16 +43,19 @@ python main.py
 ### Black–Scholes Formula
 
 **Call Option:**
+
 ```
 C(S,K,T,r,σ) = S·N(d₁) - K·e^(-rT)·N(d₂)
 ```
 
 **Put Option:**
+
 ```
 P(S,K,T,r,σ) = K·e^(-rT)·N(-d₂) - S·N(-d₁)
 ```
 
-Where:
+**Where:**
+
 ```
 d₁ = [ln(S/K) + (r + σ²/2)T] / (σ√T)
 d₂ = d₁ - σ√T
@@ -65,23 +72,79 @@ N(·) = Standard normal cumulative distribution function
 | Theta | Θ | ∂V/∂t | per day |
 | Rho | ρ | ∂V/∂r | per 1% |
 
+## Interactive Volatility Surface Explorer
+
+The `vol_surface.py` module provides a comprehensive web-based interface for exploring volatility surfaces and advanced option pricing models.
+
+### Features
+
+**🎛️ Interactive Web Dashboard**
+- Real-time parameter adjustment using intuitive sliders
+- Dynamic 3D volatility surface visualization
+- Side-by-side comparison of different models
+
+**📊 Advanced Modeling Capabilities**
+- **Heston Stochastic Volatility Model:** Captures the reality of non-constant volatility
+- **Volatility Smile Generation:** Models market-observed implied volatility patterns
+- **Parameter Calibration:** Fits model parameters to market prices
+
+**🔬 Heston Model Implementation**
+
+The Heston model extends Black–Scholes by treating volatility as a stochastic process:
+
+**Asset Price Dynamics:**
+```
+dS_t = μS_t dt + √v_t S_t dW_t^S
+```
+
+**Variance Dynamics:**
+```
+dv_t = κ(θ - v_t)dt + σ_v √v_t dW_t^v
+```
+
+**Parameters:**
+- **κ (kappa):** Mean reversion speed - how quickly volatility returns to long-term average
+- **θ (theta):** Long-run average variance - the equilibrium level of volatility
+- **σ_v (sigma_v):** Volatility of volatility - controls smile curvature
+- **ρ (rho):** Correlation between asset and volatility - controls skew (negative ρ creates left skew)
+
+### Launching the Dashboard
+
+```bash
+streamlit run vol_surface.py
+```
+
+The dashboard opens in your browser at `http://localhost:8501` and provides:
+1. **Parameter Controls:** Adjust Heston parameters (κ, θ, σ_v, ρ) in real-time
+2. **3D Surface Plot:** Interactive Plotly visualization of implied volatility across strikes and maturities
+3. **Model Comparison:** Compare Black–Scholes flat volatility vs. Heston stochastic volatility
+4. **Calibration Tools:** Fit model parameters to match market-observed option prices
+
+### Use Cases
+
+- **Educational:** Understand how volatility smile and skew emerge from stochastic volatility
+- **Research:** Test different parameter configurations and their impact on option prices
+- **Calibration:** Fit Heston parameters to real market data
+- **Risk Analysis:** Visualize volatility surface characteristics across strikes and tenors
+
 ## Model Assumptions
 
 The Black–Scholes model operates under these assumptions:
 
-1. Log-normal asset price dynamics
-2. Constant volatility
-3. No arbitrage opportunities
-4. Frictionless markets (no transaction costs)
-5. European-style options
-6. No dividends
-7. Constant risk-free rate
+- Log-normal asset price dynamics
+- Constant volatility
+- No arbitrage opportunities
+- Frictionless markets (no transaction costs)
+- European-style options
+- No dividends
+- Constant risk-free rate
 
 ## Project Structure
 
 ```
 .
 ├── main.py                 # Main execution script
+├── vol_surface.py          # Interactive Streamlit volatility explorer
 ├── requirements.txt        # Python dependencies
 └── README.md              # This file
 ```
@@ -93,9 +156,12 @@ numpy>=1.21.0
 scipy>=1.7.0
 pandas>=1.3.0
 matplotlib>=3.4.0
+streamlit>=1.28.0
+plotly>=5.17.0
 ```
 
 Install all dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -172,16 +238,19 @@ The program displays option prices and Greeks in tabular format, generates a smo
 The project generates a realistic implied volatility surface using:
 
 ### Surface Model
+
 ```
 σ_impl(K, T) = σ_ATM(T) × [1 + a × m² + b × m³]
 ```
 
-Where:
+**Where:**
+
 - `m = ln(K/S)` — Log-moneyness
 - `σ_ATM(T) = σ₀ + β√T` — ATM volatility term structure
 - `a, b` — Smile curvature parameters
 
 ### Surface Parameters
+
 - Spot Price: $100
 - Strike Range: $70 – $130
 - Maturity Range: 0.1 – 2.0 years
@@ -196,3 +265,9 @@ MIT License
 ## Contact
 
 For questions or feedback, please open an issue on GitHub.
+
+---
+
+## About
+
+A comprehensive Python-based implementation of the Black-Scholes Option Pricing Model with analytical tools and visualizations for European options.
